@@ -7,10 +7,14 @@
 #include <fstream>
 using namespace std;
 
-/* Get between two vertexes TODO!!!
+int numV;
+
+/* TODO Get weight between two vertexes
  *
  */
 int w(int a, int b){
+	// Needs access to matrix
+	// Matrix[a][b] = weight
 	return 1;
 }
 
@@ -21,8 +25,6 @@ int w(int a, int b){
  * @return The length of the shortest path between s and e.
  */
 int dijkstra(int g[][10], int s) {
-	int numV = 0; // TODO number of vertices in the graph
-
 	int dist[numV];
 	int prevV[numV];
 	int pQueue[numV];
@@ -41,7 +43,7 @@ int dijkstra(int g[][10], int s) {
 		//TODO vt = vt U u
 
 		for (int u = 0; u < 10; u++){ //TODO vertex u adjacent to u*
-			if (dist[ustar] + w(ustar,u) < dist[u]){ // TODO w()
+			if (dist[ustar] + w(ustar,u) < dist[u]){
 				dist[u] = dist[ustar] + w(ustar,u);
 				prevV[u] = ustar;
 				// TODO Decrease(Q,u,dist[u])
@@ -61,8 +63,9 @@ int main() {
 	int j = 0;
 
 	fin >> num;
+	int numV = num;
 	int graphSize = num;
-	int graph[graphSize][graphSize]; //TODO size of graph
+	int graph[graphSize][graphSize];
 
 	while (fin >> num){
 		graph[i][j] = num;
@@ -89,6 +92,9 @@ int main() {
 		cout << "Bad input. Exiting." << endl;
 		return 0;
 	}
+
+	//TODO Call to dijkstra()
+	//TODO Output
 
 	/*
 	for (int i = 0; i < graphSize; i++){
