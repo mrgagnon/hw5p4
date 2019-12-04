@@ -7,51 +7,6 @@
 #include <fstream>
 using namespace std;
 
-int numV;
-
-/* TODO Get weight between two vertexes
- *
- */
-int w(int a, int b){
-	// Needs access to matrix
-	// Matrix[a][b] = weight
-	return 1;
-}
-
-/* Weight graph,
- * @param G Weighted graph
- * @param s Starting vertex
- * @param e Ending vertex
- * @return The length of the shortest path between s and e.
- */
-int dijkstra(int g[][10], int s) {
-	int dist[numV];
-	int prevV[numV];
-	int pQueue[numV];
-
-	for (int i = 0; i < numV; i++){
-		dist[i] = INT_MAX;
-		prevV[i] = NULL;
-		//TODO insert vertex into priority queue
-	}
-	dist[s] = 0;
-	//TODO Decrease / update priority of s with ds
-	//TODO Vt = null
-
-	for (int i = 0; i < numV; i++){
-		int ustar;// TODO = deleteMin(Q)
-		//TODO vt = vt U u
-
-		for (int u = 0; u < 10; u++){ //TODO vertex u adjacent to u*
-			if (dist[ustar] + w(ustar,u) < dist[u]){
-				dist[u] = dist[ustar] + w(ustar,u);
-				prevV[u] = ustar;
-				// TODO Decrease(Q,u,dist[u])
-			}
-		}
-	}
-	return 0;
-}
 
 int main() {
 	cout << "Hi" << endl;
@@ -63,9 +18,11 @@ int main() {
 	int j = 0;
 
 	fin >> num;
-	int numV = num;
 	int graphSize = num;
 	int graph[graphSize][graphSize];
+
+	int s = 0;
+	int dest = 9;
 
 	while (fin >> num){
 		graph[i][j] = num;
@@ -77,13 +34,59 @@ int main() {
 	}
 	fin.close();
 
+
+	bool beenVisited[graphSize];
+	int dist[graphSize];
+	//int unvistedSet[graphSize];
+	for (int i = 0; i < graphSize; i++){
+		beenVisited[i] = false; // mark all nodes unvisited
+		dist[i] = INT_MAX; //set all distances to infinity
+	}
+
+	dist[s] = 0; //Initial node, distance zero
+	int curNode = s;
+	bool cont = true;
+
+	while (cont){
+		int smallestTempDist = INT_MAX;
+		int smallestTempDistPos;
+		for (int i = 0; i < graphSize -1; i++){ // check nodes for unvisited neighbors
+			if (graph[curNode][i] != 0 && beenVisited[i] == false){
+				int tempDist = dist[curNode] + graph[curNode][i]; // tentative distance through current node
+				if (tempDist < dist[i]){ // new distance is less than old distance than set new value
+					dist[i] = tempDist;
+				}
+				if (tempDist < smallestTempDist){
+					smallestTempDist = tempDist;
+					smallestTempDistPos = i;
+				}
+			}
+		}
+		beenVisited[curNode] = true;
+		if (beenVisited[dest] == true){
+			break;
+		}
+		else {
+			curNode = smallestTempDistPos;
+		}
+	}
+
+
+	for (int i = 0; i < graphSize; i++){
+		cout << dist[i] << ", ";
+	}
+
+
+
+	/*
 	int start;
 	cout << "enter starting vertex: " << endl;
 	cin >> start;
 	if (cin.bad()) {
-			cout << "Bad input. Exiting." << endl;
-			return 0;
+		cout << "Bad input. Exiting." << endl;
+		return 0;
 	}
+	cout << start<< endl ;
 
 	int end;
 	cout << "enter ending vertex: " << endl;
@@ -92,18 +95,7 @@ int main() {
 		cout << "Bad input. Exiting." << endl;
 		return 0;
 	}
-
-	//TODO Call to dijkstra()
-	//TODO Output
-
-
-	/*
-	for (int i = 0; i < graphSize; i++){
-		for (int j = 0; j < graphSize; j++){
-			cout << graph[i][j] << " ";
-		}
-		cout << endl;
-	}*/
-
+	cout << end;
+	 */
 	return 0;
 }
