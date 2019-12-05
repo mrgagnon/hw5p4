@@ -7,14 +7,16 @@
 #include <fstream>
 using namespace std;
 
+#define sizeOfGraph 10
+
 /* Vertex left in Q/not visited yet with the minimum distance
  *
  */
-int minDist(int d[10], bool visited[10]){
+int minDist(int d[sizeOfGraph], bool visited[sizeOfGraph]){
 	int min = INT_MAX;
 	int minPos = 0;
 
-	for (int i = 0; i < 10; i++){
+	for (int i = 0; i < sizeOfGraph; i++){
 		if (visited[i] == false && d[i] <= min){
 			min = d[i];
 			minPos = i;
@@ -24,8 +26,7 @@ int minDist(int d[10], bool visited[10]){
 }
 
 int main() {
-	cout << "Hi" << endl;
-
+	//Reading in matrix from file
 	fstream fin;
 	fin.open("exGraph.txt");
 	int num;
@@ -47,9 +48,28 @@ int main() {
 	}
 	fin.close();
 
-	int source = 0;
-	int dest = 9;
 
+	//Input from user, start and end vertex
+	int source;
+	int dest;
+	cout << "enter starting vertex: " << endl;
+	cin >> source;
+	if (cin.bad()) {
+			cout << "Bad input. Exiting." << endl;
+			return 0;
+	}
+	cout << "Source: " << source << endl;
+
+	cout << "enter ending vertex: " << endl;
+	cin >> dest;
+	if (cin.bad()){
+		cout << "Bad input. Exiting." << endl;
+		return 0;
+	}
+	cout << "Dest: " << dest << endl;
+
+
+	//Dijkstra's algorithm
 	bool beenVisited[graphSize]; //vertex set Q
 	int vLeftCt = graphSize;
 	int dist[graphSize];
@@ -83,20 +103,8 @@ int main() {
 		}
 	} // end while()
 
-	/*
-	cout << "dist from A/0: ";
-	for (int i = 0; i < graphSize; i++){
-		cout << dist[i] << ", ";
-	}
-	cout << endl;
 
-	cout << "prev from A/0: ";
-	for (int i = 0; i < graphSize; i++){
-		cout << prev[i] << ", ";
-	}
-	cout << endl;
-	*/
-
+	//Printing path
 	int vertexPath[graphSize];
 	for (int i = 0; i < graphSize; i++){
 			vertexPath[i] = -1;
@@ -110,29 +118,20 @@ int main() {
 		vPathPos++;
 		stepCt++;
 	}
-	cout << "path:";
+
+	int pathInOrder[stepCt-1];
+	int pos = stepCt-1;
 	for (int i = 0; i < stepCt; i++){
-		cout << vertexPath[i] << ", ";
+		pathInOrder[i] = vertexPath[pos];
+		pos--;
 	}
 
-	/*
-	int start;
-	cout << "enter starting vertex: " << endl;
-	cin >> start;
-	if (cin.bad()) {
-		cout << "Bad input. Exiting." << endl;
-		return 0;
+	cout << "Weight of path: " << dist[dest] << endl;
+	cout << "Number of vertices: " << stepCt << endl;
+	cout << "Path order (src to dest): ";
+	for (int i = 0; i < stepCt; i++){
+		cout << pathInOrder[i] << "  ";
 	}
-	cout << start<< endl ;
 
-	int end;
-	cout << "enter ending vertex: " << endl;
-	cin >> end;
-	if (cin.bad()){
-		cout << "Bad input. Exiting." << endl;
-		return 0;
-	}
-	cout << end;
-	 */
 	return 0;
 }
