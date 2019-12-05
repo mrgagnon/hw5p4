@@ -67,6 +67,9 @@ int main() {
 
 		beenVisited[u] = true;
 		vLeftCt--;
+		if (u == dest){
+			break;
+		}
 
 		for (int i = 0; i < graphSize; i++){ // unvisited neighbors of u
 			if (beenVisited[i] == false && graph[u][i] != 0){
@@ -80,54 +83,37 @@ int main() {
 		}
 	} // end while()
 
-	cout << "dist: ";
+	/*
+	cout << "dist from A/0: ";
 	for (int i = 0; i < graphSize; i++){
-		cout << i << ":" << dist[i] << " ";
+		cout << dist[i] << ", ";
 	}
 	cout << endl;
 
+	cout << "prev from A/0: ";
 	for (int i = 0; i < graphSize; i++){
 		cout << prev[i] << ", ";
 	}
+	cout << endl;
+	*/
 
-	/*
-	bool beenVisited[graphSize];
-	int dist[graphSize];
-	//int unvistedSet[graphSize];
+	int vertexPath[graphSize];
 	for (int i = 0; i < graphSize; i++){
-		beenVisited[i] = false; // mark all nodes unvisited
-		dist[i] = INT_MAX; //set all distances to infinity
+			vertexPath[i] = -1;
 	}
-
-	dist[s] = 0; //Initial node, distance zero
-	int curNode = s;
-	bool cont = true;
-
-	while (cont){
-		int smallestTempDist = INT_MAX;
-		int smallestTempDistPos;
-		for (int i = 0; i < graphSize -1; i++){ // check nodes for unvisited neighbors
-			if (graph[curNode][i] != 0 && beenVisited[i] == false){
-				int tempDist = dist[curNode] + graph[curNode][i]; // tentative distance through current node
-				if (tempDist < dist[i]){ // new distance is less than old distance than set new value
-					dist[i] = tempDist;
-				}
-				if (tempDist < smallestTempDist){
-					smallestTempDist = tempDist;
-					smallestTempDistPos = i;
-				}
-			}
-		}
-		beenVisited[curNode] = true;
-		if (beenVisited[dest] == true){
-			break;
-		}
-		else {
-			curNode = smallestTempDistPos;
-		}
+	int v = dest;
+	int vPathPos = 0;
+	int stepCt = 0;
+	while(prev[v] != source && dist[v] != INT_MAX){
+		vertexPath[vPathPos] = prev[v];
+		v = prev[v];
+		vPathPos++;
+		stepCt++;
 	}
-
-	 */
+	cout << "path:";
+	for (int i = 0; i < stepCt; i++){
+		cout << vertexPath[i] << ", ";
+	}
 
 	/*
 	int start;
