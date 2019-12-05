@@ -7,6 +7,21 @@
 #include <fstream>
 using namespace std;
 
+/* Vertex left in Q/not visited yet with the minimum distance
+ *
+ */
+int minDist(int d[10], bool visited[10]){
+	int min = INT_MAX;
+	int minPos = 0;
+
+	for (int i = 0; i < 10; i++){
+		if (visited[i] == false && d[i] <= min){
+			min = d[i];
+			minPos = i;
+		}
+	}
+	return minPos;
+}
 
 int main() {
 	cout << "Hi" << endl;
@@ -21,8 +36,6 @@ int main() {
 	int graphSize = num;
 	int graph[graphSize][graphSize];
 
-	int s = 0;
-	int dest = 9;
 
 	while (fin >> num){
 		graph[i][j] = num;
@@ -34,7 +47,50 @@ int main() {
 	}
 	fin.close();
 
+	int source = 0;
+	int dest = 9;
 
+	bool beenVisited[graphSize]; //vertex set Q
+	int vLeftCt = graphSize;
+	int dist[graphSize];
+	int prev[graphSize];
+
+	for (int i = 0; i < graphSize; i++){
+		dist[i] = INT_MAX;
+		prev[i] = NULL;
+		beenVisited[i] = false; //add v to Q
+	}
+	dist[source] = 0;
+
+	while(vLeftCt > 0){ //  while Q not empty
+		int u = minDist(dist, beenVisited); //v w/ min dist & unvisited
+
+		beenVisited[u] = true;
+		vLeftCt--;
+
+		for (int i = 0; i < graphSize; i++){ // unvisited neighbors of u
+			if (beenVisited[i] == false && graph[u][i] != 0){
+				int tempDist = dist[u] + graph[u][i];
+				if (tempDist < dist[i]){
+					dist[i] = tempDist;
+					prev[i] = u;
+				}
+			}
+
+		}
+	} // end while()
+
+	cout << "dist: ";
+	for (int i = 0; i < graphSize; i++){
+		cout << i << ":" << dist[i] << " ";
+	}
+	cout << endl;
+
+	for (int i = 0; i < graphSize; i++){
+		cout << prev[i] << ", ";
+	}
+
+	/*
 	bool beenVisited[graphSize];
 	int dist[graphSize];
 	//int unvistedSet[graphSize];
@@ -71,12 +127,7 @@ int main() {
 		}
 	}
 
-
-	for (int i = 0; i < graphSize; i++){
-		cout << dist[i] << ", ";
-	}
-
-
+	 */
 
 	/*
 	int start;
